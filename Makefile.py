@@ -1,8 +1,8 @@
-CROSS_COMPILE = "arm-none-linux-gnueabi-"
-CC = CROSS_COMPILE + "gcc"
-CPPC = CROSS_COMPILE + "g++"
-LINKER = CROSS_COMPILE + "g++"
-COMMON_CFLAGS = ["-O3", "-Wall", "-Wno-psabi"]
+CC = "gcc"
+CPPC = "g++"
+AR = "ar"
+LINKER = "g++"
+COMMON_CFLAGS = ["-O3", "-Wall", "-Wno-psabi", "-std=gnu++0x"]
 LDFLAGS = ["-static", "-Xlinker", "--start-group"]
 
 LANGUAGE_SETTINGS = {
@@ -35,10 +35,16 @@ CONFIGURATIONS = {
 LIBRARY_PATHS = []
 LIBRARIES = []
 
-ACTIVE_MODULES = ["main"]
+ACTIVE_MODULES = ["main", "system"]
 MODULES = {
   "main" : {
       "directory" : ".",
+      "language" : "c++",
+      "incpaths" : [],
+      "defines" : [],
+  },
+  "system" : {
+      "directory" : "system",
       "language" : "c++",
       "incpaths" : [],
       "defines" : [],
