@@ -1,3 +1,8 @@
+/*
+ * Author: Bengi Mizrahi
+ * Date: June 18, 2012
+ */
+
 #include "system/state.h"
 #include "system/message.h"
 #include "system/thread.h"
@@ -31,7 +36,7 @@ EXTENDED_STATE(StateXX, StateX)
 STATE_END
 
 class MyThread : public Thread {
-public:
+protected:
     virtual void run() {
         for (int i = 0; i < 1000; i++) {
             std::cout << i << std::endl;
