@@ -1,37 +1,48 @@
+/*
+ * Author: Bengi Mizrahi
+ * Date: June 18, 2012
+ */
+
 #ifndef __STATE_H__
 #define __STATE_H__
 
 #include <unordered_map>
 #include <typeinfo>
+#include <iostream>
 
 class Message;
 
-#define STATE_IMPL_START(STATE) \
-class STATE : public State { \
+class State {
+public:
+    virtual void handle(Message *message);
+};
+
+#define EXTENDED_STATE(_STATE, _PARENT_STATE) \
+class _STATE : public _PARENT_STATE { \
 private: \
-    std::unordered_map<std::string, void(STATE::*)(Message *)> handlers; \
+    std::unordered_map<std::string, void(_STATE::*)(Message *)> handlers; \
 public: \
     template <class M> \
-    void linkMessageToHandler(void (STATE::*handler)(Message *)) { \
+    void linkMessageToHandler(void (_STATE::*handler)(Message *)) { \
         std::cout << "Linking message type " << typeid(M*).name() << " to handler " << typeid(handler).name() << std::endl; \
         handlers[typeid(M*).name()] = handler; \
     } \
     void handle(Message *message) { \
-        void (STATE::*handler)(Message *) = handlers[message->getId()]; \
-        if (!handler) { \
-            std::cout << typeid(STATE).name() << " could not handle message " << message->getId() << std::endl; \
-            return; \
+        void (_STATE::*handler)(Message *) = handlers[message->getId()]; \
+        if (handler) { \
+            (this->*handler)(message); \
+        } else { \
+            _PARENT_STATE::handle(message); \
         } \
-        (this->*handler)(message); \
     }
 
-#define STATE_IMPL_END \
+#define STATE(_STATE) \
+    EXTENDED_STATE(_STATE, State)
+
+#define STATE_END \
 };
 
-#define LINK_MESSAGE_TO_HANDLER(MESSAGE, HANDLER) \
+#define LINK(MESSAGE, HANDLER) \
     linkMessageToHandler<MESSAGE>(&HANDLER);
-
-class State {
-};
 
 #endif

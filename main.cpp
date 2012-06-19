@@ -4,27 +4,37 @@
 #include <iostream>
 #include <string>
 
-MESSAGE_IMPL_START(MessageA)
-MESSAGE_IMPL_END
+MESSAGE(MessageA)
+MESSAGE_END
 
-MESSAGE_IMPL_START(MessageB)
-MESSAGE_IMPL_END
+MESSAGE(MessageB)
+MESSAGE_END
 
-STATE_IMPL_START(MyState)
-    MyState() {
-        LINK_MESSAGE_TO_HANDLER(MessageA, MyState::handleA);
-        LINK_MESSAGE_TO_HANDLER(MessageB, MyState::handleB);
+MESSAGE(MessageC)
+MESSAGE_END
+
+STATE(StateX)
+    StateX() {
+        LINK(MessageA, StateX::handleA);
+        LINK(MessageB, StateX::handleB);
     }
-
     void handleA(Message *m) { std::cout << "handleA()" << std::endl; }
     void handleB(Message *m) { std::cout << "handleB()" << std::endl; }
-STATE_IMPL_END
+STATE_END
+
+EXTENDED_STATE(StateXX, StateX)
+    StateXX() {
+        LINK(MessageC, StateXX::handleC);
+    }
+    void handleC(Message *m) {std::cout << "handleC()" << std::endl; }
+STATE_END
 
 int main(int argc, char **argv) {
-    MyState state;
+    StateXX state;
     Message *m = new MessageA();
     state.handle(m);
     m = new MessageB();
     state.handle(m);
+    return 0;
 }
 
