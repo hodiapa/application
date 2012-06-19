@@ -3,7 +3,7 @@ CPPC = "g++"
 AR = "ar"
 LINKER = "g++"
 COMMON_CFLAGS = ["-O3", "-Wall", "-Wno-psabi", "-std=gnu++0x"]
-LDFLAGS = ["-static", "-Xlinker", "--start-group"]
+LDFLAGS = ["-Xlinker", "--start-group"] #["-static"]
 
 LANGUAGE_SETTINGS = {
     "c" : {
@@ -33,7 +33,7 @@ CONFIGURATIONS = {
 }
 
 LIBRARY_PATHS = []
-LIBRARIES = []
+LIBRARIES = ["pthread"]
 
 ACTIVE_MODULES = ["main", "system"]
 MODULES = {
