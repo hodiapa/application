@@ -11,9 +11,10 @@
 #include <string>
 
 MESSAGE(MessageA)
+    MessageA() : Message(2) { }
 MESSAGE_END
 
-MESSAGE(MessageB)
+EXTENDED_MESSAGE(MessageSubA, MessageA)
 MESSAGE_END
 
 MESSAGE(MessageC)
@@ -22,10 +23,10 @@ MESSAGE_END
 STATE(StateX)
     StateX() {
         LINK(MessageA, StateX::handleA);
-        LINK(MessageB, StateX::handleB);
+        LINK(MessageSubA, StateX::handleSubA);
     }
     void handleA(Message *m) { std::cout << "handleA()" << std::endl; }
-    void handleB(Message *m) { std::cout << "handleB()" << std::endl; }
+    void handleSubA(Message *m) { std::cout << "handleSubA()" << std::endl; }
 STATE_END
 
 EXTENDED_STATE(StateXX, StateX)
@@ -46,9 +47,7 @@ protected:
 
 int main(int argc, char **argv) {
     StateXX state;
-    Message *m = new MessageA();
-    state.handle(m);
-    m = new MessageB();
+    Message *m = new MessageSubA();
     state.handle(m);
 
     MyThread t;
