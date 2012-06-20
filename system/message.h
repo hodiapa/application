@@ -11,8 +11,12 @@
 
 class Message {
 public:
+    Message(int aPriority) : priority(aPriority) { }
+public:
     virtual std::string getId() = 0;
-    virtual int getPriority() const { return 0; }
+    virtual int getPriority() const { return priority; }
+private:
+    int priority;
 };
 
 class MessageComparator {
