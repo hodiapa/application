@@ -6,35 +6,84 @@
 #include "system/state.h"
 #include "system/message.h"
 #include "system/thread.h"
+#include "system/statepossessor.h"
 
 #include <iostream>
 #include <string>
 
-MESSAGE(MessageA)
-    MessageA() : Message(2) { }
+MESSAGE(MessageRrm)
+    MessageRrm() : Message(0) { }
 MESSAGE_END
 
-EXTENDED_MESSAGE(MessageSubA, MessageA)
+EXTENDED_MESSAGE(MessageRrmStart, MessageRrm)
 MESSAGE_END
 
-MESSAGE(MessageC)
+EXTENDED_MESSAGE(MessageRrmDoCellSetup, MessageRrm)
 MESSAGE_END
 
-STATE(StateX)
-    StateX() {
-        LINK(MessageA, StateX::handleA);
-        LINK(MessageSubA, StateX::handleSubA);
+EXTENDED_MESSAGE(MessageRrmDoCellTeardown, MessageRrm)
+MESSAGE_END
+
+EXTENDED_MESSAGE(MessageRrmStop, MessageRrm)
+MESSAGE_END
+
+class StateVoid;
+class StateRrm;
+class StateRrmCellIsUp;
+
+STATE(StateVoid)
+    virtual void setup() {
+        LINK(MessageRrmStart, StateVoid::handleRrmStart);
     }
-    void handleA(Message *m) { std::cout << "handleA()" << std::endl; }
-    void handleSubA(Message *m) { std::cout << "handleSubA()" << std::endl; }
+    void handleRrmStart(Message *m) {
+        std::cout << "handleRrmStart()" << std::endl;
+        std::cout << "RRM Started" << std::endl;
+        setState<StateRrm>();
+    }
 STATE_END
 
-EXTENDED_STATE(StateXX, StateX)
-    StateXX() {
-        LINK(MessageC, StateXX::handleC);
+STATE(StateRrm)
+    virtual void setup() {
+        LINK(MessageRrmDoCellSetup, StateRrm::handleRrmDoCellSetup);
+        LINK(MessageRrmStop, StateRrm::handleRrmStop);
     }
-    void handleC(Message *m) {std::cout << "handleC()" << std::endl; }
+    void handleRrmDoCellSetup(Message *m) {
+        std::cout << "handleRrmDoCellSetup()" << std::endl;
+        std::cout << "Cell Setup is successful" << std::endl;
+        setState<StateRrmCellIsUp>();
+    }
+    void handleRrmStop(Message *m) {
+        std::cout << "handleRrmStop()" << std::endl;
+        std::cout << "RRM is stopped" << std::endl;
+        setState<StateVoid>();
+    }
 STATE_END
+
+EXTENDED_STATE(StateRrmCellIsUp, StateRrm)
+    virtual void setup() {
+        LINK(MessageRrmDoCellTeardown, StateRrmCellIsUp::handleRrmDoCellTeardown);
+    }
+    void handleRrmDoCellTeardown(Message *m) {
+        std::cout << "handleC()" << std::endl;
+        std::cout << "Cell is torn down" << std::endl;
+    }
+STATE_END
+
+class Module : public StatePossessor {
+public:
+    Module() {
+        setState<StateVoid>();
+    }
+};
+
+int main(int argc, char **argv) {
+    Module module;
+    Message *m = new MessageRrmStart();
+    module.handle(m);
+
+    return 0;
+}
+
 
 class MyThread : public Thread {
 protected:
@@ -45,15 +94,11 @@ protected:
     }
 };
 
-int main(int argc, char **argv) {
-    StateXX state;
-    Message *m = new MessageSubA();
-    state.handle(m);
-
+int _main(int argc, char **argv) {
     MyThread t;
+
     t.start();
     t.join();
-
     return 0;
 }
 
