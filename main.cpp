@@ -38,7 +38,7 @@ STATE_END
 class MyThread : public Thread {
 protected:
     virtual void run() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 4; i++) {
             std::cout << i << std::endl;
         }
     }
