@@ -35,12 +35,12 @@ CONFIGURATIONS = {
 LIBRARY_PATHS = []
 LIBRARIES = ["pthread"]
 
-ACTIVE_MODULES = ["main", "system"]
+ACTIVE_MODULES = ["sample", "system"]
 MODULES = {
-  "main" : {
-      "directory" : ".",
+  "sample" : {
+      "directory" : "sample",
       "language" : "c++",
-      "incpaths" : [],
+      "incpaths" : ["."],
       "defines" : [],
   },
   "system" : {

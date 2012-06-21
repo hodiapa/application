@@ -15,14 +15,8 @@ class StatePossessor {
 public:
     StatePossessor();
 public:
-    template <class S> void setState() {
-        if (state) {
-            delete state;
-        }
-        state = new S();
-        state->setup();
-    }
-    void handle(Message *message);
+    void setState(State *aState);
+    void handle(Message *aMessage);
 private:
     State *state;
 };

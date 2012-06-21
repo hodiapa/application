@@ -19,10 +19,9 @@ public:
     State() : statePossessor(NULL) { }
 public:
     void setStatePossesser(StatePossessor *statePossessor);
-    template <class S> void setState() {
-        statePossessor->setState<S>();
+    void setState(State *state) {
+        statePossessor->setState(state);
     }
-
 public:
     virtual void setup() = 0;
     virtual void handle(Message *message);
@@ -35,11 +34,15 @@ class _STATE : public _PARENT_STATE { \
 private: \
     std::unordered_map<std::string, void(_STATE::*)(Message *)> handlers; \
 public: \
+    virtual void setup(); \
     template <class M> void linkMessageToHandler(void (_STATE::*handler)(Message *)) { \
         std::cout << "Linking message type " << typeid(M*).name() << " to handler " << typeid(handler).name() << std::endl; \
         handlers[typeid(M*).name()] = handler; \
     } \
-    void handle(Message *message) { \
+    void handle(Message *message);
+
+#define EXTENDED_STATE_IMPL(_STATE, _PARENT_STATE) \
+    void _STATE::handle(Message *message) { \
         void (_STATE::*handler)(Message *) = handlers[message->getId()]; \
         if (handler) { \
             (this->*handler)(message); \
@@ -53,6 +56,9 @@ public: \
 
 #define STATE_END \
 };
+
+#define STATE_IMPL(_STATE) \
+    EXTENDED_STATE_IMPL(_STATE, State)
 
 #define LINK(MESSAGE, HANDLER) \
     linkMessageToHandler<MESSAGE>(&HANDLER);

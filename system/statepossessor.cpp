@@ -10,8 +10,16 @@
 StatePossessor::StatePossessor() : state(NULL) {
 }
 
-void StatePossessor::handle(Message *message) {
+void StatePossessor::handle(Message *aMessage) {
     if (state) {
-        state->handle(message);
+        state->handle(aMessage);
     }
+}
+
+void StatePossessor::setState(State *aState) {
+    if (state) {
+        delete state;
+    }
+    state = aState;
+    state->setup();
 }
