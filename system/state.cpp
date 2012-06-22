@@ -11,11 +11,11 @@ void State::handle(Message *message) {
     std::cout << "State::handle(" << message->getId() << ")" << std::endl;
 }
 
-void State::setStatePossessor(StatePossessor *aStatePossessor) {
-    statePossessor = aStatePossessor;
+void State::setStateMachine(StateMachine *aStateMachine) {
+    stateMachine = aStateMachine;
 }
 
 void State::setState(State *state) {
-    statePossessor->setState(state);
+    stateMachine->changeState(state);
 }
 

@@ -6,7 +6,7 @@
 #ifndef __STATE_H__
 #define __STATE_H__
 
-#include "statepossessor.h"
+#include "statemachine.h"
 
 #include "message.h"
 
@@ -16,18 +16,18 @@
 
 class State {
 public:
-    State() : statePossessor(NULL) { }
+    State() : stateMachine(NULL) { }
 private:
-    void setStatePossessor(StatePossessor *aStatePossessor);
+    void setStateMachine(StateMachine *aStateMachine);
 protected:
     virtual void setState(State *state);
 public:
     virtual void setup() = 0;
     virtual void handle(Message *message) = 0;
 private:
-    StatePossessor *statePossessor;
+    StateMachine *stateMachine;
 
-    friend class StatePossessor;
+    friend class StateMachine;
 };
 
 template <class S, class P=State>

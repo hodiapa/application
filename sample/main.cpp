@@ -6,7 +6,7 @@
 #include "system/state.h"
 #include "system/message.h"
 #include "system/thread.h"
-#include "system/statepossessor.h"
+#include "system/statemachine.h"
 
 #include <iostream>
 #include <string>
@@ -28,7 +28,7 @@ SUB_MESSAGE(MessageRrmStop, MessageRrm, 0) {
 
 #include "samplestates.h"
 
-class Module : public StatePossessor {
+class Module : public StateMachine {
 public:
     Module() {
         changeState(new StateVoid);
