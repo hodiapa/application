@@ -18,7 +18,7 @@ class State {
 public:
     State() : statePossessor(NULL) { }
 public:
-    void setStatePossesser(StatePossessor *statePossessor);
+    void setStatePossesser(StatePossessor *aStatePossessor);
     void setState(State *state) {
         statePossessor->setState(state);
     }

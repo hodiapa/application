@@ -21,5 +21,6 @@ void StatePossessor::setState(State *aState) {
         delete state;
     }
     state = aState;
+    state->setStatePossesser(this);
     state->setup();
 }
