@@ -16,11 +16,11 @@ void StatePossessor::handle(Message *aMessage) {
     }
 }
 
-void StatePossessor::setState(State *aState) {
+void StatePossessor::changeState(State *aState) {
     if (state) {
         delete state;
     }
     state = aState;
-    state->setStatePossesser(this);
+    state->setStatePossessor(this);
     state->setup();
 }

@@ -31,7 +31,7 @@ SUB_MESSAGE(MessageRrmStop, MessageRrm, 0) {
 class Module : public StatePossessor {
 public:
     Module() {
-        setState(new StateVoid);
+        changeState(new StateVoid);
     }
 };
 

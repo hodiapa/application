@@ -11,7 +11,7 @@ void State::handle(Message *message) {
     std::cout << "State::handle(" << message->getId() << ")" << std::endl;
 }
 
-void State::setStatePossesser(StatePossessor *aStatePossessor) {
+void State::setStatePossessor(StatePossessor *aStatePossessor) {
     statePossessor = aStatePossessor;
 }
 

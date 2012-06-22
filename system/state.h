@@ -17,14 +17,17 @@
 class State {
 public:
     State() : statePossessor(NULL) { }
-public:
-    void setStatePossesser(StatePossessor *aStatePossessor);
+private:
+    void setStatePossessor(StatePossessor *aStatePossessor);
+protected:
     virtual void setState(State *state);
 public:
     virtual void setup() = 0;
     virtual void handle(Message *message) = 0;
 private:
     StatePossessor *statePossessor;
+
+    friend class StatePossessor;
 };
 
 template <class S, class P=State>

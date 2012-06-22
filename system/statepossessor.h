@@ -15,7 +15,7 @@ class StatePossessor {
 public:
     StatePossessor();
 public:
-    void setState(State *aState);
+    void changeState(State *aState);
     void handle(Message *aMessage);
 private:
     State *state;
