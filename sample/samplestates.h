@@ -3,18 +3,20 @@
 
 #include "system/state.h"
 
-
-STATE(StateVoid)
+STATE(StateVoid) {
+    virtual void setup();
     void handleRrmStart(Message *m);
-STATE_END
+};
 
-STATE(StateRrm)
+STATE(StateRrm) {
+    virtual void setup();
     void handleRrmDoCellSetup(Message *m);
     void handleRrmStop(Message *m);
-STATE_END
+};
 
-SUB_STATE(StateRrmCellIsUp, StateRrm)
+SUB_STATE(StateRrmCellIsUp, StateRrm) {
+    virtual void setup();
     void handleRrmDoCellTeardown(Message *m);
-STATE_END
+};
 
 #endif // __SAMPLE_STATES_H__

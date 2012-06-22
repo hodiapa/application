@@ -14,3 +14,8 @@ void State::handle(Message *message) {
 void State::setStatePossesser(StatePossessor *aStatePossessor) {
     statePossessor = aStatePossessor;
 }
+
+void State::setState(State *state) {
+    statePossessor->setState(state);
+}
+
