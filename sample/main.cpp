@@ -11,21 +11,20 @@
 #include <iostream>
 #include <string>
 
-MESSAGE(MessageRrm)
-    MessageRrm() : Message(0) { }
-MESSAGE_END
+MESSAGE(MessageRrm, 0) {
+};
 
-EXTENDED_MESSAGE(MessageRrmStart, MessageRrm)
-MESSAGE_END
+SUB_MESSAGE(MessageRrmStart, MessageRrm, 0) {
+};
 
-EXTENDED_MESSAGE(MessageRrmDoCellSetup, MessageRrm)
-MESSAGE_END
+SUB_MESSAGE(MessageRrmDoCellSetup, MessageRrm, 0) {
+};
 
-EXTENDED_MESSAGE(MessageRrmDoCellTeardown, MessageRrm)
-MESSAGE_END
+SUB_MESSAGE(MessageRrmDoCellTeardown, MessageRrm, 0) {
+};
 
-EXTENDED_MESSAGE(MessageRrmStop, MessageRrm)
-MESSAGE_END
+SUB_MESSAGE(MessageRrmStop, MessageRrm, 0) {
+};
 
 #include "samplestates.h"
 
@@ -38,7 +37,12 @@ public:
 
 int main(int argc, char **argv) {
     Module module;
-    Message *m = new MessageRrmStart();
+    Message *m;
+    m = new MessageRrmDoCellSetup();
+    module.handle(m);
+    m = new MessageRrmStart();
+    module.handle(m);
+    m = new MessageRrmDoCellSetup();
     module.handle(m);
 
     return 0;

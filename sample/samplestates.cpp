@@ -2,13 +2,18 @@
 
 #include "system/message.h"
 
+class MessageRrmStart;
+class MessageRrmDoCellSetup;
+class MessageRrmStop;
+class MessageRrmDoCellTeardown;
+
 EXTENDED_STATE_IMPL(StateVoid, State)
 void StateVoid::setup() {
     LINK(MessageRrmStart, StateVoid::handleRrmStart);
 }
 void StateVoid::handleRrmStart(Message *m) {
     std::cout << "handleRrmStart()" << std::endl;
-    std::cout << "RRM Started" << std::endl;
+    std::cout << "StateVoid::RRM Started" << std::endl;
     setState(new StateRrm);
 }
 
@@ -33,6 +38,6 @@ void StateRrmCellIsUp::setup() {
     LINK(MessageRrmDoCellTeardown, StateRrmCellIsUp::handleRrmDoCellTeardown);
 }
 void StateRrmCellIsUp::handleRrmDoCellTeardown(Message *m) {
-    std::cout << "handleC()" << std::endl;
+    std::cout << "handleRrmDoCellTeardown()" << std::endl;
     std::cout << "Cell is torn down" << std::endl;
 }

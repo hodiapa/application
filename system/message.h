@@ -11,13 +11,22 @@
 
 class Message {
 public:
-    Message(int aPriority) : priority(aPriority) { }
-public:
     virtual std::string getId() = 0;
-    virtual int getPriority() const { return priority; }
-private:
-    int priority;
+    virtual int getPriority() const = 0;
 };
+
+template <class M, int PR=0, class P=Message>
+class ConcreteMessage : public P {
+public:
+    virtual std::string getId() { return typeid(M*).name(); }
+    virtual int getPriority() const { return PR; }
+};
+
+#define SUB_MESSAGE(_MESSAGE, _PARENT_MESSAGE, _PRIORITY) \
+    class _MESSAGE : public ConcreteMessage<_MESSAGE, _PRIORITY, _PARENT_MESSAGE>
+
+#define MESSAGE(_MESSAGE, _PRIORITY) \
+    class _MESSAGE : public ConcreteMessage<_MESSAGE, _PRIORITY>
 
 class MessageComparator {
 public:
@@ -30,17 +39,6 @@ public:
     }
 private:
     bool reverse;
-};
-
-#define EXTENDED_MESSAGE(_MESSAGE, _PARENT_MESSAGE) \
-class _MESSAGE : public _PARENT_MESSAGE { \
-public: \
-    virtual std::string getId() { return typeid(_MESSAGE*).name(); }
-
-#define MESSAGE(_MESSAGE) \
-    EXTENDED_MESSAGE(_MESSAGE, Message)
-
-#define MESSAGE_END \
 };
 
 #endif // __MESSAGE_H__

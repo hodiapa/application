@@ -3,11 +3,6 @@
 
 #include "system/state.h"
 
-class Message;
-class MessageRrmStart;
-class MessageRrmDoCellSetup;
-class MessageRrmStop;
-class MessageRrmDoCellTeardown;
 
 STATE(StateVoid)
     void handleRrmStart(Message *m);
