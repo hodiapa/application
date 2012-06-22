@@ -20,7 +20,7 @@ public:
 private:
     void setStateMachine(StateMachine *aStateMachine);
 protected:
-    virtual void setState(State *state);
+    virtual void changeState(State *state);
 public:
     virtual void setup() = 0;
     virtual void handle(Message *message) = 0;

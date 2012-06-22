@@ -13,7 +13,7 @@ void StateVoid::setup() {
 void StateVoid::handleRrmStart(Message *m) {
     std::cout << "handleRrmStart()" << std::endl;
     std::cout << "StateVoid::RRM Started" << std::endl;
-    setState(new StateRrm);
+    changeState(new StateRrm);
 }
 
 void StateRrm::setup() {
@@ -23,12 +23,12 @@ void StateRrm::setup() {
 void StateRrm::handleRrmDoCellSetup(Message *m) {
     std::cout << "handleRrmDoCellSetup()" << std::endl;
     std::cout << "Cell Setup is successful" << std::endl;
-    setState(new StateRrmCellIsUp);
+    changeState(new StateRrmCellIsUp);
 }
 void StateRrm::handleRrmStop(Message *m) {
     std::cout << "handleRrmStop()" << std::endl;
     std::cout << "RRM is stopped" << std::endl;
-    setState(new StateVoid);
+    changeState(new StateVoid);
 }
 
 void StateRrmCellIsUp::setup() {
@@ -37,5 +37,5 @@ void StateRrmCellIsUp::setup() {
 void StateRrmCellIsUp::handleRrmDoCellTeardown(Message *m) {
     std::cout << "handleRrmDoCellTeardown()" << std::endl;
     std::cout << "Cell is torn down" << std::endl;
-    setState(new StateRrm);
+    changeState(new StateRrm);
 }

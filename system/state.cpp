@@ -15,7 +15,7 @@ void State::setStateMachine(StateMachine *aStateMachine) {
     stateMachine = aStateMachine;
 }
 
-void State::setState(State *state) {
+void State::changeState(State *state) {
     stateMachine->changeState(state);
 }
 
