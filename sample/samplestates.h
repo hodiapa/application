@@ -13,7 +13,7 @@ STATE(StateRrm)
     void handleRrmStop(Message *m);
 STATE_END
 
-EXTENDED_STATE(StateRrmCellIsUp, StateRrm)
+SUB_STATE(StateRrmCellIsUp, StateRrm)
     void handleRrmDoCellTeardown(Message *m);
 STATE_END
 

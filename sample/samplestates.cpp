@@ -7,7 +7,7 @@ class MessageRrmDoCellSetup;
 class MessageRrmStop;
 class MessageRrmDoCellTeardown;
 
-EXTENDED_STATE_IMPL(StateVoid, State)
+SUB_STATE_IMPL(StateVoid, State)
 void StateVoid::setup() {
     LINK(MessageRrmStart, StateVoid::handleRrmStart);
 }
@@ -17,7 +17,7 @@ void StateVoid::handleRrmStart(Message *m) {
     setState(new StateRrm);
 }
 
-EXTENDED_STATE_IMPL(StateRrm, State)
+SUB_STATE_IMPL(StateRrm, State)
 void StateRrm::setup() {
     LINK(MessageRrmDoCellSetup, StateRrm::handleRrmDoCellSetup);
     LINK(MessageRrmStop, StateRrm::handleRrmStop);
@@ -33,7 +33,7 @@ void StateRrm::handleRrmStop(Message *m) {
     setState(new StateVoid);
 }
 
-EXTENDED_STATE_IMPL(StateRrmCellIsUp, StateRrm)
+SUB_STATE_IMPL(StateRrmCellIsUp, StateRrm)
 void StateRrmCellIsUp::setup() {
     LINK(MessageRrmDoCellTeardown, StateRrmCellIsUp::handleRrmDoCellTeardown);
 }

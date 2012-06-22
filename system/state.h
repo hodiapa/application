@@ -29,7 +29,7 @@ private:
     StatePossessor *statePossessor;
 };
 
-#define EXTENDED_STATE(_STATE, _PARENT_STATE) \
+#define SUB_STATE(_STATE, _PARENT_STATE) \
 class _STATE : public _PARENT_STATE { \
 private: \
     std::unordered_map<std::string, void(_STATE::*)(Message *)> handlers; \
@@ -41,7 +41,7 @@ public: \
     } \
     void handle(Message *message);
 
-#define EXTENDED_STATE_IMPL(_STATE, _PARENT_STATE) \
+#define SUB_STATE_IMPL(_STATE, _PARENT_STATE) \
     void _STATE::handle(Message *message) { \
         void (_STATE::*handler)(Message *) = handlers[message->getId()]; \
         if (handler) { \
@@ -52,13 +52,13 @@ public: \
     }
 
 #define STATE(_STATE) \
-    EXTENDED_STATE(_STATE, State)
+    SUB_STATE(_STATE, State)
 
 #define STATE_END \
 };
 
 #define STATE_IMPL(_STATE) \
-    EXTENDED_STATE_IMPL(_STATE, State)
+    SUB_STATE_IMPL(_STATE, State)
 
 #define LINK(MESSAGE, HANDLER) \
     linkMessageToHandler<MESSAGE>(&HANDLER);
