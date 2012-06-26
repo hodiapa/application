@@ -1,6 +1,7 @@
 #ifndef MESSAGEQUEUE_H
 #define MESSAGEQUEUE_H
 
+#include "condition.h"
 #include "message.h"
 #include <queue>
 
@@ -16,6 +17,7 @@ private:
     priority_queue<Message *,
                    vector<Message *>,
                    less<vector<Message *>::value_type> > queue;
+    Condition condition;
 };
 
 #endif // MESSAGEQUEUE_H
