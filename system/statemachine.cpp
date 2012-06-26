@@ -2,13 +2,16 @@
 
 #include "state.h"
 
-StateMachine::StateMachine() : state(NULL) {
+StateMachine::StateMachine()
+: state(NULL), messageQueue() {
+}
+
+StateMachine::~StateMachine() {
+    join();
 }
 
 void StateMachine::handle(Message *aMessage) {
-    if (state) {
-        state->handle(aMessage);
-    }
+    messageQueue.push(aMessage);
 }
 
 void StateMachine::changeState(State *aState) {
@@ -17,5 +20,15 @@ void StateMachine::changeState(State *aState) {
     }
     state = aState;
     state->setStateMachine(this);
-    state->setup();
+}
+
+void StateMachine::run() {
+    while (alive) {
+        Message *message = messageQueue.pop();
+        if (state) {
+            state->handle(message);
+        } else {
+            std::cout << "Error: Can't start StateMachine when state is NULL" << std::endl;
+        }
+    }
 }
