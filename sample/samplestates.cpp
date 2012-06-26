@@ -2,7 +2,7 @@
 
 #include "system/message.h"
 
-void StateVoid::setup() {
+StateVoid::StateVoid() {
     LINK(MessageRrmStart, StateVoid::handleRrmStart);
 }
 void StateVoid::handleRrmStart(Message *m) {
@@ -11,7 +11,7 @@ void StateVoid::handleRrmStart(Message *m) {
     changeState(new StateRrm);
 }
 
-void StateRrm::setup() {
+StateRrm::StateRrm() {
     LINK(MessageRrmDoCellSetup, StateRrm::handleRrmDoCellSetup);
     LINK(MessageRrmStop, StateRrm::handleRrmStop);
 }
@@ -26,7 +26,7 @@ void StateRrm::handleRrmStop(Message *m) {
     changeState(new StateVoid);
 }
 
-void StateRrmCellIsUp::setup() {
+StateRrmCellIsUp::StateRrmCellIsUp() {
     LINK(MessageRrmDoCellTeardown, StateRrmCellIsUp::handleRrmDoCellTeardown);
 }
 void StateRrmCellIsUp::handleRrmDoCellTeardown(Message *m) {

@@ -17,7 +17,6 @@ private:
 protected:
     virtual void changeState(State *state);
 public:
-    virtual void setup() = 0;
     virtual void handle(Message *message) = 0;
 private:
     StateMachine *stateMachine;
