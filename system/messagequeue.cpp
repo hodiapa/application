@@ -20,3 +20,7 @@ void MessageQueue::push(Message *message) {
         condition.notify();
     condition.unlock();
 }
+
+unsigned int MessageQueue::size() {
+    return static_cast<unsigned int>(queue.size());
+}

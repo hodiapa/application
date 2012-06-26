@@ -4,23 +4,25 @@
 #include <iostream>
 
 #include "thread.h"
-#include "messagequeue.h"
+#include "dispatcher.h"
 
 class State;
 class Message;
+class Dispatcher;
 
-class StateMachine : public Thread {
+class StateMachine {
 public:
-    StateMachine();
+    StateMachine(Dispatcher *aDispatcher);
     ~StateMachine();
 public:
+    void setDispatcher(Dispatcher *aDispatcher);
+    State *getState();
     void changeState(State *aState);
     void handle(Message *aMessage);
-public:
-    void run();
+    void terminate();
 private:
     State *state;
-    MessageQueue messageQueue;
+    Dispatcher *dispatcher;
 };
 
 #endif // __STATEMACHINE_H__

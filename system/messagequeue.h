@@ -13,6 +13,7 @@ public:
 public:
     Message *pop();
     void push(Message *message);
+    unsigned int size();
 private:
     priority_queue<Message *,
                    vector<Message *>,
