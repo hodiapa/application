@@ -16,6 +16,7 @@
 int main(int argc, char **argv) {
     StateMachine fsm;
     fsm.changeState(new StateVoid);
+    fsm.start();
     Message *m;
     m = new MessageRrmDoCellSetup();
     fsm.handle(m);
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
     fsm.handle(m);
     m = new MessageRrmDoCellSetup();
     fsm.handle(m);
+    fsm.join();
 
     return 0;
 }
