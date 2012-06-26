@@ -2,11 +2,6 @@
 
 #include "system/message.h"
 
-class MessageRrmStart;
-class MessageRrmDoCellSetup;
-class MessageRrmStop;
-class MessageRrmDoCellTeardown;
-
 void StateVoid::setup() {
     LINK(MessageRrmStart, StateVoid::handleRrmStart);
 }
