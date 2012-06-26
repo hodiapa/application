@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #ifndef __STATEMACHINE_H__
 #define __STATEMACHINE_H__
 

@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #include "state.h"
 
 #include "message.h"

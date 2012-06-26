@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #ifndef __MESSAGE_H__
 #define __MESSAGE_H__
 

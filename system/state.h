@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #ifndef __STATE_H__
 #define __STATE_H__
 

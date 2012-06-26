@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #ifndef __THREAD_H__
 #define __THREAD_H__
 
