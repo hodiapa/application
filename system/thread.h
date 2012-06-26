@@ -12,8 +12,10 @@ public:
 protected:
     virtual void run() = 0;
     static void *exec(void *thread);
+protected:
+    bool alive;
 private:
-    pthread_t id;
+    pthread_t threadId;
     Thread(const Thread &rhs);
     Thread &operator=(const Thread &rhs);
 };

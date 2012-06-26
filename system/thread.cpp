@@ -1,14 +1,18 @@
 #include "thread.h"
 
-Thread::Thread() {
+Thread::Thread() : alive(false) {
 }
 
 bool Thread::start() {
-    return !pthread_create(&id, NULL, &Thread::exec, this);
+    alive = true;
+    return !pthread_create(&threadId, NULL, &Thread::exec, this);
 }
 
 bool Thread::join() {
-    return bool(pthread_join(id, NULL));
+    if (alive) {
+        return bool(pthread_join(threadId, NULL));
+    }
+    return true;
 }
 
 void *Thread::exec(void *thread) {
