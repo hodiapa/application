@@ -11,7 +11,8 @@
 
 class State {
 public:
-    State() : stateMachine(NULL) { }
+    State();
+    virtual ~State();
 private:
     void setStateMachine(StateMachine *aStateMachine);
 protected:

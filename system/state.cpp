@@ -2,6 +2,14 @@
 
 #include "message.h"
 
+State::State() : stateMachine(NULL) {
+
+}
+
+State::~State() {
+
+}
+
 void State::handle(Message *message) {
     std::cout << "State::handle(" << message->getId() << ")" << std::endl;
 }
