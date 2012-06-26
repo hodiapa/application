@@ -10,6 +10,8 @@ public:
     virtual int getPriority() const = 0;
 };
 
+bool operator<(const Message& lhs, const Message& rhs);
+
 template <class M, int PR=0, class P=Message>
 class ConcreteMessage : public P {
 public:
@@ -22,18 +24,5 @@ public:
 
 #define MESSAGE(_MESSAGE, _PRIORITY) \
     class _MESSAGE : public ConcreteMessage<_MESSAGE, _PRIORITY>
-
-class MessageComparator {
-public:
-    MessageComparator(const bool &aReverse=false) : reverse(aReverse) {
-    }
-    bool operator()(const Message *lhs, const Message *rhs) {
-        bool r = lhs->getPriority() < rhs->getPriority();
-        if (reverse) r = !r;
-        return r;
-    }
-private:
-    bool reverse;
-};
 
 #endif // __MESSAGE_H__
