@@ -17,7 +17,7 @@ public:
 private:
     priority_queue<Message *,
                    vector<Message *>,
-                   less<vector<Message *>::value_type> > queue;
+                   MessageComparator> queue;
     Condition condition;
 };
 
