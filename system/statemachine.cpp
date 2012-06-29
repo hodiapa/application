@@ -3,9 +3,12 @@
 #include "state.h"
 
 
-StateMachine::StateMachine(Dispatcher *aDispatcher)
+StateMachine::StateMachine(Dispatcher *aDispatcher, State *initialState)
     : state(NULL), dispatcher(NULL) {
     setDispatcher(aDispatcher);
+    if (initialState) {
+        changeState(initialState);
+    }
 }
 
 StateMachine::~StateMachine() {

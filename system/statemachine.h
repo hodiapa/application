@@ -12,7 +12,7 @@ class Dispatcher;
 
 class StateMachine {
 public:
-    StateMachine(Dispatcher *aDispatcher);
+    StateMachine(Dispatcher *aDispatcher, State *initialState=NULL);
     ~StateMachine();
 public:
     void setDispatcher(Dispatcher *aDispatcher);

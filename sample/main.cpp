@@ -14,11 +14,10 @@
 
 
 int main(int argc, char **argv) {
-    StateMachine fsm(new AsyncDispatcher);
-    fsm.changeState(new StateVoid);
-    fsm.handle(new MessageRrmDoCellSetup());
-    fsm.handle(new MessageRrmStart());
-    fsm.handle(new MessageRrmDoCellSetup());
+    StateMachine fsm(new AsyncDispatcher, new StateVoid);
+    fsm.handle(new MessageRrmDoCellSetup);
+    fsm.handle(new MessageRrmStart);
+    fsm.handle(new MessageRrmDoCellSetup);
     fsm.terminate();
     return 0;
 }
