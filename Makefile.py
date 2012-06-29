@@ -1,3 +1,5 @@
+COLOR = False
+
 CC = "gcc"
 CPPC = "g++"
 AR = "ar"
