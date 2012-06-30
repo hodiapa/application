@@ -1,28 +1,28 @@
 #ifndef __STATE_H__
 #define __STATE_H__
 
-#include "statemachine.h"
-
 #include "message.h"
 
 #include <unordered_map>
 #include <typeinfo>
 #include <iostream>
 
+class AbstractStateMachine;
+
 class State {
 public:
     State();
     virtual ~State();
 private:
-    void setStateMachine(StateMachine *aStateMachine);
+    void setStateMachine(AbstractStateMachine *aStateMachine);
 protected:
     virtual void changeState(State *state);
 public:
     virtual void handle(Message *message) = 0;
 private:
-    StateMachine *stateMachine;
+    AbstractStateMachine *stateMachine;
 
-    friend class StateMachine;
+    friend class AbstractStateMachine;
 };
 
 template <class S, class P=State>

@@ -2,33 +2,21 @@
 
 #include "state.h"
 
-
-StateMachine::StateMachine(Dispatcher *aDispatcher, State *initialState)
-    : state(NULL), dispatcher(NULL) {
-    setDispatcher(aDispatcher);
+AbstractStateMachine::AbstractStateMachine(State *initialState)
+    : state(NULL) {
     if (initialState) {
         changeState(initialState);
     }
 }
 
-StateMachine::~StateMachine() {
-    delete dispatcher;
+AbstractStateMachine::~AbstractStateMachine() {
 }
 
-void StateMachine::setDispatcher(Dispatcher *aDispatcher) {
-    dispatcher = aDispatcher;
-    dispatcher->setStateMachine(this);
-}
-
-void StateMachine::handle(Message *aMessage) {
-    dispatcher->dispatch(aMessage);
-}
-
-State *StateMachine::getState() {
+State *AbstractStateMachine::getState() {
     return state;
 }
 
-void StateMachine::changeState(State *aState) {
+void AbstractStateMachine::changeState(State *aState) {
     if (state) {
         delete state;
     }
@@ -36,6 +24,59 @@ void StateMachine::changeState(State *aState) {
     state->setStateMachine(this);
 }
 
-void StateMachine::terminate() {
-    dispatcher->terminate();
+
+StateMachine<DispatchModeSync>::StateMachine(State *initialState)
+    : AbstractStateMachine(initialState) {
+
+}
+
+StateMachine<DispatchModeSync>::~StateMachine() {
+
+}
+
+void StateMachine<DispatchModeSync>::handle(Message *aMessage) {
+    getState()->handle(aMessage);
+    delete aMessage;
+}
+
+
+StateMachine<DispatchModeAsync>::StateMachine(State *initialState)
+    : AbstractStateMachine(initialState) {
+
+}
+
+StateMachine<DispatchModeAsync>::~StateMachine() {
+
+}
+
+void StateMachine<DispatchModeAsync>::handle(Message *aMessage) {
+    if (!alive) {
+        start();
+    }
+    messageQueue.push(aMessage);
+}
+
+
+void StateMachine<DispatchModeAsync>::terminate() {
+    while (messageQueue.size()) {
+        sleep(0.2);
+    }
+    if (alive) {
+        alive = false;
+        join();
+    }
+}
+
+void StateMachine<DispatchModeAsync>::run() {
+    while (alive) {
+        Message *message = messageQueue.pop();
+        std::cout << "messageQueue.pop() -> " << message->getId() << std::endl;
+        State *state = getState();
+        if (state) {
+            state->handle(message);
+            delete message;
+        } else {
+            std::cout << "Error: Can't handle message when state is NULL" << std::endl;
+        }
+    }
 }

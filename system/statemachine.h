@@ -4,25 +4,58 @@
 #include <iostream>
 
 #include "thread.h"
-#include "dispatcher.h"
+#include "messagequeue.h"
 
 class State;
 class Message;
-class Dispatcher;
 
-class StateMachine {
+class AbstractStateMachine {
 public:
-    StateMachine(Dispatcher *aDispatcher, State *initialState=NULL);
-    ~StateMachine();
+    AbstractStateMachine(State *initialState = NULL);
+    ~AbstractStateMachine();
 public:
-    void setDispatcher(Dispatcher *aDispatcher);
-    State *getState();
-    void changeState(State *aState);
-    void handle(Message *aMessage);
-    void terminate();
+    virtual State *getState();
+    virtual void changeState(State *aState);
+    virtual void handle(Message *aMessage) = 0;
+    virtual void terminate() = 0;
 private:
     State *state;
-    Dispatcher *dispatcher;
+};
+
+typedef enum {
+    DispatchModeSync = 0,
+    DispatchModeAsync
+} DispatchMode;
+
+template <DispatchMode D>
+class StateMachine {
+};
+
+template<>
+class StateMachine<DispatchModeSync>
+        : public AbstractStateMachine {
+public:
+    StateMachine(State *initialState=NULL);
+    ~StateMachine();
+public:
+    virtual void handle(Message *aMessage);
+    virtual void terminate() {}
+};
+
+template<>
+class StateMachine<DispatchModeAsync>
+        : public AbstractStateMachine, public Thread {
+public:
+    StateMachine(State *initialState=NULL);
+    ~StateMachine();
+public:
+    virtual void handle(Message *aMessage);
+    virtual void terminate();
+protected:
+    virtual void run();
+private:
+    State *state;
+    MessageQueue messageQueue;
 };
 
 #endif // __STATEMACHINE_H__

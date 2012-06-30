@@ -14,7 +14,10 @@
 
 
 int main(int argc, char **argv) {
-    StateMachine fsm(new AsyncDispatcher, new StateVoid);
+    StateMachine<DispatchModeAsync> fsm(new StateVoid);
+    fsm.handle(new MessageRrmDoCellSetup);
+    fsm.handle(new MessageRrmDoCellSetup);
+    fsm.handle(new MessageRrmDoCellSetup);
     fsm.handle(new MessageRrmDoCellSetup);
     fsm.handle(new MessageRrmStart);
     fsm.handle(new MessageRrmDoCellSetup);
