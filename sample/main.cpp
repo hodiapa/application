@@ -7,6 +7,7 @@
 #include "system/message.h"
 #include "system/thread.h"
 #include "system/statemachine.h"
+#include "system/messagerouter.h"
 
 #include <iostream>
 #include <string>
@@ -14,13 +15,15 @@
 
 
 int main(int argc, char **argv) {
-    StateMachine<DispatchModeAsync> fsm(new StateVoid);
-    fsm.handle(new MessageRrmDoCellSetup);
-    fsm.handle(new MessageRrmDoCellSetup);
-    fsm.handle(new MessageRrmDoCellSetup);
-    fsm.handle(new MessageRrmDoCellSetup);
-    fsm.handle(new MessageRrmStart);
-    fsm.handle(new MessageRrmDoCellSetup);
-    fsm.terminate();
+    MessageRouter router;
+    StateMachine<DispatchModeAsync> rrmFsm(new StateVoid);
+
+    router.link<MessageRrmDoCellSetup>(&rrmFsm);
+    router.link<MessageRrmStart>(&rrmFsm);
+
+    router.send(new MessageRrmDoCellSetup);
+    router.send(new MessageRrmStart);
+    router.send(new MessageRrmDoCellSetup);
+
     return 0;
 }
