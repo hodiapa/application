@@ -1,8 +1,3 @@
-/*
- * Author: Bengi Mizrahi
- * Date: June 18, 2012
- */
-
 #include "system/state.h"
 #include "system/message.h"
 #include "system/thread.h"
