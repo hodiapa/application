@@ -25,5 +25,6 @@ int main(int argc, char **argv) {
     router.send(new MessageRrmStart);
     router.send(new MessageRrmDoCellSetup);
 
+    rrmFsm.terminate();
     return 0;
 }
