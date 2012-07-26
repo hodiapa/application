@@ -1,8 +1,4 @@
-#include "system/state.h"
-#include "system/message.h"
-#include "system/thread.h"
-#include "system/statemachine.h"
-#include "system/messagerouter.h"
+#include "system/system.h"
 
 #include <iostream>
 #include <string>
