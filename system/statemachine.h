@@ -54,7 +54,6 @@ public:
 protected:
     virtual void run();
 private:
-    State *state;
     MessageQueue messageQueue;
 };
 
