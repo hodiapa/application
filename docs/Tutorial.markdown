@@ -16,7 +16,7 @@ ROOT/Makefile.py:
     CPPC = "g++"
     AR = "ar"
     LINKER = "g++"
-    COMMON_CFLAGS = ["-Wall",]
+    COMMON_CFLAGS = ["-Wall", "-std=gnu++0x"]
     LDFLAGS = []
     
     LANGUAGE_SETTINGS = {  
@@ -51,7 +51,7 @@ ROOT/Makefile.py:
       "myapp" : {
           "directory" : "myapp",
           "language" : "c++",
-          "incpaths" : [],
+          "incpaths" : ["."],
           "defines" : [],
       },
     }
@@ -74,3 +74,8 @@ Go into ROOT folder and type:
     pmake
 
 If you see app.debug inside ROOT, we are good.
+
+
+Creating a Message:
+-------------------
+
