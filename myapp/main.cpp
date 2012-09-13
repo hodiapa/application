@@ -18,11 +18,11 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-    MyState state;
-    StateMachine<DispatchModeSync> fsm(&state);
+    MessageRouter router;
+    StateMachine<DispatchModeAsync> fsm(new MyState);
 
-    Message *m = new MyMessage();
-    fsm.handle(m);
+    router.link<MyMessage>(&fsm);
+    router.send(new MyMessage());
 
     return 0;
 }
