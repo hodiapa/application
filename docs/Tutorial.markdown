@@ -260,3 +260,37 @@ State Machine Dispatch Mode:
 
 Use StateMachine<DispatchModeSync> if you want the messages to be handled
 in the same thread. MessageRouter accepts only DispatchModeAsync.
+
+Using State, StateMachine and MessageRouter Hierarchically:
+-----------------------------------------------------------
+
+These classes are not singletons so you can, for instance, have such a
+hierarchy:
+
+MessageRouter
+|
++- Module1StateMachine<DispatchModeAsync>
+|  |
+|  +- State1ofModule1
+|  |
+|  +- State2ofModule1
+|  |
+|  +- State3ofModule1
+|     |
+|     +- SubMessageRouter
+|        |
+|        +- so on..
+|
++- Module2StateMachine<DispatchModeAsync>
+   |
+   +- State1ofModule2
+   |  |
+   |  +- StateMachine<DispatchModeSync>
+   |     |
+   |     +- StateA
+   |     |
+   |     +- StateB
+   |     |
+   |     +- StateC
+   |
+   +- State2ofModule2

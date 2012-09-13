@@ -24,6 +24,8 @@ int main(int argc, char *argv[]) {
     router.link<MyMessage>(&fsm);
     router.send(new MyMessage());
 
+    int i;
+    cin >> i;
     return 0;
 }
 
