@@ -205,6 +205,42 @@ We created a StateMachine object and set its initial state as MyState.
 We removed 'delete m;' because it is already done StateMachine. We will
 come to what 'DispatchModeSync' means later.
 
+Creating a SubState:
+--------------------
+
+You can extend a State as follows:
+
+    #include "system/system.h"
+    #include <iostream>
+    using namespace std;
+
+    MESSAGE(MyMessage, 1) {
+
+    };
+
+    STATE(MyState) {
+    public:
+        MyState() {
+            LINK(MyMessage, MyState::handleMyMessage);
+        }
+        void handleMyMessage(Message *m) {
+            cout << "handleMyMessage()" << endl; 
+        }
+    };
+
+    SUB_STATE(MySubState, MyState) {
+    public:
+        MySubState() {
+            LINK(SomeOtherMessage, MySubState::handleSomeOtherMessage);
+        }
+        void handleSomeOtherMessage(Message *m) {
+            cout << "handleSomeOtherMessage()" << endl;
+        }
+    };
+
+Here, MySubState will handle SomeOtherMessage and if it receives MyMessage, it will be forwarded
+to the super class MyState. 
+
 Switching State:
 ----------------
 
@@ -258,8 +294,11 @@ MessageRouter class:
 State Machine Dispatch Mode:
 ----------------------------
 
-Use StateMachine<DispatchModeSync> if you want the messages to be handled
-in the same thread. MessageRouter accepts only DispatchModeAsync.
+Use 
+
+    StateMachine<DispatchModeSync>
+
+if you want the messages to be handled in the same thread. MessageRouter accepts only DispatchModeAsync.
 
 Using State, StateMachine and MessageRouter Hierarchically:
 -----------------------------------------------------------
@@ -267,30 +306,30 @@ Using State, StateMachine and MessageRouter Hierarchically:
 These classes are not singletons so you can, for instance, have such a
 hierarchy:
 
-MessageRouter
-|
-+- Module1StateMachine<DispatchModeAsync>
-|  |
-|  +- State1ofModule1
-|  |
-|  +- State2ofModule1
-|  |
-|  +- State3ofModule1
-|     |
-|     +- SubMessageRouter
-|        |
-|        +- so on..
-|
-+- Module2StateMachine<DispatchModeAsync>
-   |
-   +- State1ofModule2
-   |  |
-   |  +- StateMachine<DispatchModeSync>
-   |     |
-   |     +- StateA
-   |     |
-   |     +- StateB
-   |     |
-   |     +- StateC
-   |
-   +- State2ofModule2
+    MessageRouter
+    |
+    +- Module1StateMachine<DispatchModeAsync>
+    |  |
+    |  +- State1ofModule1
+    |  |
+    |  +- State2ofModule1
+    |  |
+    |  +- State3ofModule1
+    |     |
+    |     +- SubMessageRouter
+    |        |
+    |        +- so on..
+    |
+    +- Module2StateMachine<DispatchModeAsync>
+       |
+       +- State1ofModule2
+       |  |
+       |  +- StateMachine<DispatchModeSync>
+       |     |
+       |     +- StateA
+       |     |
+       |     +- StateB
+       |     |
+       |     +- StateC
+       |
+       +- State2ofModule2
