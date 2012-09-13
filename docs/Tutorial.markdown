@@ -196,6 +196,7 @@ call State::handle() directly. For this example to work, we have to introduce an
         StateMachine<DispatchModeSync> fsm(new MyState);
         Message *m = new MyMessage();
         fsm.handle(m);
+        fsm.terminate();
 
         return 0;
     }
@@ -238,3 +239,24 @@ state as the current state.
 Routing Messages:
 -----------------
 
+When the system is made up of multiple state machines, routing messages
+to corresponding state machines will be complicated. For this, we have
+MessageRouter class:
+
+    int main(int argc, char **argv) {
+        MessageRouter router;
+        StateMachine<DispatchModeAsync> fsm1(new MyState1);
+        StateMachine<DispatchModeAsync> fsm2(new MyState2);
+        router.link<MyMessage1>(&fsm1);
+        router.link<MyMessage2>(&fsm2);
+        router.send(new MyMessage1);
+        router.send(new MyMessage2);
+
+        return 0;
+    }
+
+State Machine Dispatch Mode:
+----------------------------
+
+Use StateMachine<DispatchModeSync> if you want the messages to be handled
+in the same thread. MessageRouter accepts only DispatchModeAsync.
